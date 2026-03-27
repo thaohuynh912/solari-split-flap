@@ -184,17 +184,7 @@
       line-height: 1;
     }
 
-    .flap-top::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--sf-gap-line);
-      z-index: 5;
-      transition: background 0.4s ease;
-    }
+    /* Gap line removed — board bg gap between top/bottom halves provides the split */
 
     .split-flap-cell.author-cell .flap-top .flap-char,
     .split-flap-cell.author-cell .flap-bottom .flap-char,
