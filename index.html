@@ -7,13 +7,26 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      /* Theme: dark (default) — hue 0, sat 0%, dark mode */
+      --sf-body-bg: #111;
+      --sf-board-bg: #1a1a1a;
+      --sf-flap-top: #2a2a2a;
+      --sf-flap-bottom: #222;
+      --sf-gap-line: #111;
+      --sf-text: #f0f0f0;
+      --sf-author: #f5c542;
+    }
+
     body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #111;
+      flex-direction: column;
+      background: var(--sf-body-bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background 0.4s ease;
     }
 
     .split-flap-board {
@@ -21,11 +34,12 @@
       flex-direction: column;
       gap: 3px;
       padding: 2rem;
-      background: #1a1a1a;
+      background: var(--sf-board-bg);
       border-radius: 12px;
       width: fit-content;
       margin: 2rem auto;
       overflow: hidden;
+      transition: background 0.4s ease;
     }
 
     .split-flap-row {
@@ -46,8 +60,9 @@
       font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", "Courier New", monospace;
       font-size: 1.1rem;
       font-weight: bold;
-      color: #f0f0f0;
+      color: var(--sf-text);
       text-align: center;
+      transition: color 0.4s ease;
     }
 
     .flap-top {
@@ -56,10 +71,11 @@
       left: 0;
       width: 100%;
       height: 50%;
-      background: #2a2a2a;
+      background: var(--sf-flap-top);
       border-radius: 3px 3px 0 0;
       overflow: hidden;
       z-index: 1;
+      transition: background 0.4s ease;
     }
 
     .flap-top .flap-char {
@@ -80,10 +96,11 @@
       left: 0;
       width: 100%;
       height: 50%;
-      background: #222;
+      background: var(--sf-flap-bottom);
       border-radius: 0 0 3px 3px;
       overflow: hidden;
       z-index: 1;
+      transition: background 0.4s ease;
     }
 
     .flap-bottom .flap-char {
@@ -122,10 +139,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #2a2a2a;
+      background: var(--sf-flap-top);
       border-radius: 3px 3px 0 0;
       backface-visibility: hidden;
       overflow: hidden;
+      transition: background 0.4s ease;
     }
 
     .flap-flip-front .flap-char {
@@ -146,11 +164,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #222;
+      background: var(--sf-flap-bottom);
       border-radius: 0 0 3px 3px;
       backface-visibility: hidden;
       transform: rotateX(180deg);
       overflow: hidden;
+      transition: background 0.4s ease;
     }
 
     .flap-flip-back .flap-char {
@@ -172,15 +191,39 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: #111;
+      background: var(--sf-gap-line);
       z-index: 5;
+      transition: background 0.4s ease;
     }
 
     .split-flap-cell.author-cell .flap-top .flap-char,
     .split-flap-cell.author-cell .flap-bottom .flap-char,
     .split-flap-cell.author-cell .flap-flip-front .flap-char,
     .split-flap-cell.author-cell .flap-flip-back .flap-char {
-      color: #f5c542;
+      color: var(--sf-author);
+    }
+
+    /* Theme switcher hint */
+    .theme-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      font-size: 0.7rem;
+      color: var(--sf-text);
+      opacity: 0.3;
+      font-family: "SF Mono", "Fira Code", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      transition: color 0.4s ease, opacity 0.4s ease;
+    }
+    .theme-hint .key {
+      display: inline-block;
+      border: 1px solid;
+      border-radius: 3px;
+      padding: 0.1em 0.35em;
+      margin: 0 0.15em;
+      opacity: 0.6;
     }
 
     @keyframes flapDown {
@@ -219,9 +262,92 @@
 <body>
 
 <div class="split-flap-board" id="board"></div>
+<div class="theme-hint"><span class="key">T</span> cycle theme</div>
 
 <script>
 (function() {
+  // ──────────────────────────────────────────────
+  // Theme engine
+  // ──────────────────────────────────────────────
+  //
+  // Physics: light comes from above.
+  //   - Top flap: lighter (catches light)
+  //   - Bottom flap: darker (in shadow)
+  //   - Board bg: darkest (recessed behind flaps)
+  //   - Gap line: matches board bg (shadow between flaps)
+  //   - Body bg: slightly darker/lighter than board for depth
+  //
+  // For dark themes: low lightness, text is light
+  // For light themes: high lightness, text is dark
+  //
+  // generateTheme(hue, saturation, mode)
+  //   hue: 0-360
+  //   saturation: 0-100
+  //   mode: 'dark' or 'light'
+
+  function hsl(h, s, l) {
+    return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+  }
+
+  function generateTheme(hue, sat, mode) {
+    if (mode === 'dark') {
+      return {
+        bodyBg:    hsl(hue, sat, 6),
+        boardBg:   hsl(hue, sat, 10),
+        flapTop:   hsl(hue, sat, 18),
+        flapBottom: hsl(hue, sat, 14),
+        gapLine:   hsl(hue, sat, 6),
+        text:      hsl(hue, Math.min(sat, 10), 94),
+        author:    hsl(45, 85, 60)
+      };
+    } else {
+      return {
+        bodyBg:    hsl(hue, sat, 95),
+        boardBg:   hsl(hue, sat, 88),
+        flapTop:   hsl(hue, sat, 82),
+        flapBottom: hsl(hue, sat, 76),
+        gapLine:   hsl(hue, sat, 70),
+        text:      hsl(hue, sat, 10),
+        author:    hsl(45, 85, 42)
+      };
+    }
+  }
+
+  function applyTheme(theme) {
+    var root = document.documentElement;
+    root.style.setProperty('--sf-body-bg', theme.bodyBg);
+    root.style.setProperty('--sf-board-bg', theme.boardBg);
+    root.style.setProperty('--sf-flap-top', theme.flapTop);
+    root.style.setProperty('--sf-flap-bottom', theme.flapBottom);
+    root.style.setProperty('--sf-gap-line', theme.gapLine);
+    root.style.setProperty('--sf-text', theme.text);
+    root.style.setProperty('--sf-author', theme.author);
+  }
+
+  // Preset themes
+  var themes = [
+    { name: 'classic',   hue: 0,   sat: 0,  mode: 'dark' },
+    { name: 'mint',      hue: 155, sat: 30, mode: 'dark' },
+    { name: 'ocean',     hue: 210, sat: 35, mode: 'dark' },
+    { name: 'purple',    hue: 270, sat: 30, mode: 'dark' },
+    { name: 'amber',     hue: 35,  sat: 40, mode: 'dark' },
+    { name: 'rose',      hue: 345, sat: 25, mode: 'dark' },
+    { name: 'fog',       hue: 0,   sat: 0,  mode: 'light' },
+    { name: 'sage',      hue: 140, sat: 15, mode: 'light' },
+    { name: 'lavender',  hue: 260, sat: 20, mode: 'light' },
+    { name: 'sand',      hue: 35,  sat: 20, mode: 'light' }
+  ];
+
+  var themeIndex = 0;
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 't' || e.key === 'T') {
+      themeIndex = (themeIndex + 1) % themes.length;
+      var t = themes[themeIndex];
+      applyTheme(generateTheme(t.hue, t.sat, t.mode));
+    }
+  });
+
   // ──────────────────────────────────────────────
   // Configuration
   // ──────────────────────────────────────────────
@@ -562,15 +688,7 @@
     var grid = result.grid;
     var authorRows = result.authorRows;
 
-    cells.forEach(function(cell) { cell.classList.remove('author-cell'); });
-    for (var r = 0; r < ROWS; r++) {
-      if (authorRows[r]) {
-        for (var ac = 0; ac < COLS; ac++) {
-          cells[r * COLS + ac].classList.add('author-cell');
-        }
-      }
-    }
-
+    // Apply author classes per-cell only after each cell's drum settles
     var maxDrumTime = 0;
 
     for (var r = 0; r < ROWS; r++) {
@@ -583,21 +701,20 @@
           var drumTime = drumToChar(idx, target, delay);
           if (delay + drumTime > maxDrumTime) maxDrumTime = delay + drumTime;
         }
+
+        // Schedule author class change per-cell after its drum finishes
+        (function(cellIdx, row, cellDelay) {
+          var tid = setTimeout(function() {
+            if (authorRows[row]) {
+              cells[cellIdx].classList.add('author-cell');
+            } else {
+              cells[cellIdx].classList.remove('author-cell');
+            }
+          }, cellDelay + FLIP_MS + 50);
+          cellTimers[cellIdx].push(tid);
+        })(idx, r, delay);
       }
     }
-
-    // Re-apply author classes after drums settle
-    var authorRowsCopy = authorRows;
-    setTimeout(function() {
-      cells.forEach(function(cell) { cell.classList.remove('author-cell'); });
-      for (var ar = 0; ar < ROWS; ar++) {
-        if (authorRowsCopy[ar]) {
-          for (var ac2 = 0; ac2 < COLS; ac2++) {
-            cells[ar * COLS + ac2].classList.add('author-cell');
-          }
-        }
-      }
-    }, maxDrumTime + 100);
 
     setTimeout(callback, maxDrumTime + HOLD_MS);
   }

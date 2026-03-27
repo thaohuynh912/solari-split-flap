@@ -13,6 +13,8 @@ A physically accurate split-flap (Solari board) display built with vanilla HTML,
 - **Synthesized click sound** — Web Audio API generates a short filtered-noise burst per flip (no audio files needed). Activates on first user interaction
 - **Author names in yellow** — lines prefixed with `@` render in gold, right-aligned
 - **Cascading stagger** — cells flip left-to-right, top-to-bottom with a 50ms delay per cell
+- **10 color themes** — press `T` to cycle through dark and light hue variations (classic, mint, ocean, purple, amber, rose, fog, sage, lavender, sand)
+- **HSL theme engine** — `generateTheme(hue, sat, mode)` calculates physically correct flap colors: top flap lighter (catches light), bottom flap darker (in shadow), board recessed behind both
 - **Responsive** — scales down on tablet and mobile
 - **Zero dependencies** — single HTML file, no build step
 
@@ -46,6 +48,29 @@ var quotes = [
 | `FLIP_MS` | 150 | Single flap animation duration (ms) |
 | `CHAR_DELAY` | 50 | Stagger between cells in cascade (ms) |
 | `HOLD_MS` | 5000 | Time to hold a finished quote before cycling (ms) |
+
+### Themes
+
+Press `T` to cycle through 10 built-in themes. You can also create your own:
+
+```javascript
+// generateTheme(hue, saturation, mode)
+// hue: 0-360, sat: 0-100, mode: 'dark' or 'light'
+var theme = generateTheme(155, 30, 'dark');  // mint dark
+applyTheme(theme);
+```
+
+The theme engine uses HSL to calculate physically correct values:
+
+| Surface | Dark mode | Light mode | Why |
+|---------|-----------|------------|-----|
+| Body bg | L: 6% | L: 95% | Deepest layer |
+| Board bg | L: 10% | L: 88% | Recessed behind flaps |
+| Top flap | L: 18% | L: 82% | Catches light from above |
+| Bottom flap | L: 14% | L: 76% | In shadow below split |
+| Gap line | L: 6% | L: 70% | Shadow between flap halves |
+
+All colors use CSS custom properties (`--sf-*`), so you can also override them directly in CSS.
 
 ### Embedding
 
