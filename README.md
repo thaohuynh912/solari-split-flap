@@ -4,7 +4,7 @@ A physically accurate split-flap (Solari board) display built with vanilla HTML,
 
 **[See it live →](https://hvpandya.com/solari)**
 
-![Split-flap display showing a quote](https://github.com/hardikpandya/solari-split-flap/raw/main/screenshot.png)
+![Split-flap display showing a quote](solari-demo.png)
 
 ## Features
 
