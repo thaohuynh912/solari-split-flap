@@ -72,6 +72,10 @@ The theme engine uses HSL to calculate physically correct values:
 
 All colors use CSS custom properties (`--sf-*`), so you can also override them directly in CSS.
 
+For achromatic themes (saturation 0), author names stay yellow. For chromatic themes, author names use the theme's own hue at high saturation for a cohesive feel.
+
+![Theme variations](solari-themes.png)
+
 ### Embedding
 
 Drop the HTML into any page. The display is a self-contained `<div>` with scoped styles and an IIFE script — no global pollution.
